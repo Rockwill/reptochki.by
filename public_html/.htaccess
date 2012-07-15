@@ -1,0 +1,55 @@
+# Turn on URL rewriting
+RewriteEngine On
+
+# Installation directory
+RewriteBase /
+
+# Protect hidden files from being viewed
+<Files .*>
+	Order Deny,Allow
+	Deny From All
+</Files>
+
+# Protect application and system files from being viewed
+RewriteRule ^(?:application|modules|system)\b.* index.php/$0 [L]
+
+# Allow any files or directories that exist to be displayed directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Rewrite all other URLs to index.php/URL
+RewriteRule .* index.php/$0 [PT]
+#
+#<IfModule mod_expires.c>
+#ExpiresActive On
+#ExpiresDefault "access plus 3600 seconds"
+#ExpiresByType image/x-icon "access plus 29030400 seconds"
+#ExpiresByType image/jpeg "access plus 29030400 seconds"
+#ExpiresByType image/png "access plus 29030400 seconds"
+#ExpiresByType image/gif "access plus 29030400 seconds"
+#ExpiresByType text/css "access plus 604800 seconds"
+#ExpiresByType text/javascript "access plus 2419200 seconds"
+#ExpiresByType application/x-javascript "access plus 604800 seconds"
+#</IfModule>
+#<IfModule mod_headers.c>
+## указываем определенную дату
+#<filesmatch .(ico|pdf|flv|jpg|jpeg|png|gif|swf)$="">
+#Header set Expires "Wed, 13 Dec 2012 01:00:00 GMT"
+#</filesmatch>
+## 1 год
+#<FilesMatch "\.(ico|pdf|flv)$">
+#Header set Cache-Control "max-age=29030400, public"
+#</FilesMatch>
+## 1 неделя
+#<FilesMatch "\.(jpg|jpeg|png|gif|swf)$">
+#Header set Cache-Control "max-age=604800, public"
+#</FilesMatch>
+## 2 дня
+#<FilesMatch "\.(xml|txt|css|js)$">
+#Header set Cache-Control "max-age=172800, proxy-revalidate"
+#</FilesMatch>
+## 2 часа
+#<FilesMatch "\.(html|htm|txt)$">
+#Header set Cache-Control "max-age=7200, must-revalidate"
+#</FilesMatch>
+#</IfModule>
